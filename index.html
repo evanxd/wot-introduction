@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Web of Things Maker Introduction</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+  <pre id="source">
+
+class: center, middle
+
+# Web of Things
+# Brainstorming Workshop
+
+## [曾增仁(Evan Tseng)](http://github.com/evanxd)
+
+---
+
+class: center, middle
+
+![Evan Tseng](images/evanxd.jpg)
+
+## github: [evanxd](http://github.com/evanxd), email: [evan@tseng.io](evan@tseng.io)
+
+---
+
+class: middle
+
+# Open Source Developer
+* [Firefox OS](https://github.com/mozilla-b2g) Core Developer
+* [JSMarionette](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox_OS/Automated_testing/Gaia_integration_tests) Maintainer
+* [Web of Things Maker](http://wotjs.io/maker) Author
+
+---
+
+class: middle
+
+# Do Four Things Today
+
+* Introduce Web of Things(WoT)
+* Live demo to hack WoT with JS
+* Show Showcases of Internet of Things
+* Do Brainstorming for WoT
+
+---
+
+class: middle
+
+# What is Web of Things
+
+## Software architecture allows real-world objects to be part of the World Wide Web.
+
+---
+
+class: middle
+
+# IoT vs WoT
+
+## just like Internet and Web
+
+* WoT is the "software" layer to connect devices to the Internet.
+* IoT is the "hardward" layer to connect devices to the Internet.
+
+---
+
+class: middle
+
+# WoT  Architecture
+
+![WoT Architecture](images/wot-architecture.png)
+
+---
+
+class: middle, center
+
+# New Approach
+
+## Connect devices from Webpage directly!
+
+---
+
+class: middle
+
+# [WoT.JS](http://wotjs.io)
+
+## A library provides Web Components to control devices.
+
+---
+
+class: middle
+
+# Concepts in WoT.JS
+
+* Every device is represented as a DOM element in a Web page.
+* A WoT app is just a Web app, hackers can control multiple devices in it.
+* Only JavaScript code, no native(C/C++) code to build a WoT app.
+
+---
+
+class: middle
+
+# Sample Code
+
+HTML
+```
+&ltweb-arduino id="arduino" device-name="DEVICE">&lt/web-arduino>
+```
+
+JavaScript
+```
+var arduino = document.querySelector('#arduino');
+arduino.addEventListener('ready', function() {
+  var led = arduino.Led(7);
+  led.on();
+});
+```
+
+---
+
+class: middle
+
+# [Web of Things Maker](http://wotjs.io/maker)
+
+## An online editor helps developers build cross-platform WoT applications faster and easier.
+
+---
+
+class: middle
+
+# Why Web of Things Maker?
+
+* The fastest way to hack devices
+* Only JS, No Native Code
+* No need to Setup Development Environment
+* Cross-platform Runner
+
+---
+
+class: middle
+
+# Write Once, Run Anywhere
+
+## Cross-platform Runner
+* Mac OS, Linux, and Windows.
+* FxOS, Android, and iOS.
+
+---
+
+class: center, middle
+
+# Web of Things Maker
+
+![Web of Things Maker](images/web-of-things-maker.png)
+
+---
+
+class: center, middle
+
+# [Live Demo](http://wotjs.io/maker)
+
+---
+
+class: middle
+
+# How it Works
+
+![How It Works](images/how-it-works.png)
+
+---
+
+class: middle
+
+# Firmata
+
+## A generic protocol for communicating with microcontrollers from software on a host computer.
+
+---
+
+class: middle
+
+# chrome-app-api-proxy
+
+```
+proxy.call('chrome.serial.getDevices')
+.then(function(devices) {
+  var path;
+  devices.forEach(function(device) {
+    if (device.path.match('cu.usbmodem')) {
+      path = device.path;
+    }
+  });
+  var options = {
+    bitrate: 57600,
+  };
+  return proxy.call('chrome.serial.connect', path, options);
+})
+.then(function(info) {
+  var connectionId = info.connectionId;
+  // Check Arduino board is ready.
+  proxy.listenSerialPort(function(info) {
+    info.connectionId === connectionId &&
+      proxy.call('chrome.serial.send', connectionId, [144, 0, 1]);
+  });
+});
+```
+
+---
+
+class: middle
+
+# Hack Chrome App APIs
+
+* Call Chrome App APIs from Webpage.
+
+* Launch the Chrome App from Webpage.
+
+---
+
+class: middle
+
+# Call Chrome App APIs from Webpage
+
+JavaScript
+```
+var port = chrome.runtime.connect(extensionId);
+port.postMessage(data);
+port.onMessage.addListener(function(message) {
+  console.log(message);
+});
+```
+
+manifest.json
+```
+"externally_connectable": {
+  "matches": [
+    "http://wotjs.io/maker/*"
+  ]
+}
+```
+
+---
+
+class: middle
+
+# Launch Chrome App from Webpage
+
+HTML
+```
+&lta id="setup" href="setup.html">&lt/a>
+```
+
+JavaScript
+```
+document.querySelector('#setup').click();
+```
+
+manifest.json
+```
+"url_handlers": {
+  "start_app": {
+    "title": "Start Chrome API Proxy App",
+    "matches": [
+      "http://wotjs.io/maker/setup.html"
+    ]
+  }
+}
+```
+
+---
+
+class: middle
+
+# Showcases
+
+* Body: Track your activity levels
+* Home: Heat your home efficiently
+* City: Keep Streets Clean
+* Industry: In-Store Analytics
+* Environment: Help Protect Wildlife
+
+---
+
+class: middle
+
+# WoT Brainstorming Workshop
+
+---
+
+class: middle
+
+# Source Code
+
+* Web of Things Maker: [https://github.com/wotjs/maker](https://github.com/wotjs/maker)
+* WoT.JS: [https://github.com/wotjs/wotjs.github.io](https://github.com/wotjs/wotjs.github.io)
+* Web Arduino: [https://github.com/evanxd/web-arduino](https://github.com/evanxd/web-arduino)
+
+  </pre>
+  <script src="http://gnab.github.io/remark/downloads/remark-0.5.7.min.js"></script>
+  <script type="text/javascript">
+    var slideshow = remark.create();
+  </script>
+</body>
+</html>
