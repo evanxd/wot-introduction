@@ -204,114 +204,6 @@ class: center, middle
 
 ---
 
-class: middle
-
-# How it Works
-
-![How It Works](images/how-it-works.png)
-
----
-
-class: middle
-
-# Firmata
-
-## A generic protocol for communicating with microcontrollers from software on a host computer.
-
----
-
-class: middle
-
-# chrome-app-api-proxy
-
-```
-proxy.call('chrome.serial.getDevices')
-.then(function(devices) {
-  var path;
-  devices.forEach(function(device) {
-    if (device.path.match('cu.usbmodem')) {
-      path = device.path;
-    }
-  });
-  var options = {
-    bitrate: 57600,
-  };
-  return proxy.call('chrome.serial.connect', path, options);
-})
-.then(function(info) {
-  var connectionId = info.connectionId;
-  // Check Arduino board is ready.
-  proxy.listenSerialPort(function(info) {
-    info.connectionId === connectionId &&
-      proxy.call('chrome.serial.send', connectionId, [144, 0, 1]);
-  });
-});
-```
-
----
-
-class: middle
-
-# Hack Chrome App APIs
-
-* Call Chrome App APIs from Webpage.
-
-* Launch the Chrome App from Webpage.
-
----
-
-class: middle
-
-# Call Chrome App APIs from Webpage
-
-JavaScript
-```
-var port = chrome.runtime.connect(extensionId);
-port.postMessage(data);
-port.onMessage.addListener(function(message) {
-  console.log(message);
-});
-```
-
-manifest.json
-```
-"externally_connectable": {
-  "matches": [
-    "http://wotjs.io/maker/*"
-  ]
-}
-```
-
----
-
-class: middle
-
-# Launch Chrome App from Webpage
-
-HTML
-```
-&lta id="setup" href="setup.html">&lt/a>
-```
-
-JavaScript
-```
-document.querySelector('#setup').click();
-```
-
-manifest.json
-```
-"url_handlers": {
-  "start_app": {
-    "title": "Start Chrome API Proxy App",
-    "matches": [
-      "http://wotjs.io/maker/setup.html"
-    ]
-  }
-}
-```
-
----
-
 class: middle, center
 
 # Biggest Challenge in WoT?
@@ -343,7 +235,7 @@ class: middle
 * Body: Track your activity levels
 * Home: Heat your home efficiently
 * City: Keep Streets Clean
-* Industry: In-Store Analytics
+* Industry: Monitor
 * Environment: Help Protect Wildlife
 
 ---
@@ -363,7 +255,7 @@ class: middle
 
 # Rules
 
-* Team: 5 People
+* Team: 5 ~ 6 People
 * Presentation: An Idea for 3 Minutes
 * Winner: Team with The Most Votes
 * Prizes: Special Mozilla Gifts
